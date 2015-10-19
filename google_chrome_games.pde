@@ -1,7 +1,9 @@
 // global variables (can be used everywhere below)
+//cactus
 float x1;    // tracks horizontal position of first cactus
 float s1;    // speed for first cactus
 float a1;    // acceleration for first cactus
+//Dino
 float dinoY;     // tracks position of dino
 float dinoS;     // tracks speed of dino
 float dinoA;     // tracks acceleration of the dino
