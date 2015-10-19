@@ -1,94 +1,108 @@
-//global variables
-float x1; //tracks x coord of first cactus
-float a1; //tracks acceleration of x1
-float s1; //tracks speed of x1
-//float x2; //tracks x coord of second cactus
-//float a2; //tracks acceleration of x2
-//float s2; //tracks speed of x2
-//float x3; //tracks x coord of third cactus
-//float a3; //tracks acceleration of x3
-//float s3; //tracks speed of x3
-float dinoY; //tracks y coord of dino
-float dinoS; //tracks speed of dino
-float dinoA; //tracks acceleration of the dino
-float gravity; //gravity
-
-//Runs once
+// global variables (can be used everywhere below)
+float x1;    // tracks horizontal position of first cactus
+float s1;    // speed for first cactus
+float a1;    // acceleration for first cactus
+float dinoY;     // tracks position of dino
+float dinoS;     // tracks speed of dino
+float dinoA;     // tracks acceleration of the dino
+float gravity;   // gravity
+float distance;  //track distance between dino and a cactus
+// this function runs once only
 void setup() {
- size(800, 200);
- frameRate(60);
- //set initial position of cactus
- x1 = 900; //cactus one
- //x2 = 1050;  //cactus two
- //x3 = 1200;  //cactus three
- a1 = -0.4;  //accel. of cactus one
- s1 = -3;  //initial speed of cactus one
- //a2 = -0.5; //accel. of cactus two
- //s2 = -3; //initial accel of cactus two
- //a3 = 0.6; //accel. of cactus three
- //s3 = -3; //initial speed of cactus three
- dinoY = 170; //initial vertical position of dino
- dinoS = 0; //initial dino speed
- dinoA = 0; //accel. of dino
- gravity = 0.05; //gravity
+  // draw the canvas
+  size(800, 200);
+
+  // set the initial position of the cactus
+  x1 = 900; // position it off-screen on the right
+
+  // set the intial acceleration
+  a1 = -0.4; 
+
+  // set the initial speed
+  s1 = -2;
+
+  // set dino initial vertical position
+  dinoY = 170;
+
+  // set dino's initial speed
+  dinoS = 0;
+
+  // set dino's initial acceleration
+  dinoA = 0;
+
+  // set gravity
+  gravity = 0.07;
 }
-//Runs repeatedly
+
+// this function runs repeatedly
 void draw() {
- background(255);
+  // background clears each time the program loops
+  background(255);
 
- fill (0);
- //status updates
- text("dinoY is " + dinoY, 150, 25);
- text("dinoS is " + dinoS, 150, 50);
- text("dinoA is " + dinoA, 150, 75);
- //       x    y   w    h
- ellipse(x1, 175, 50, 50); // Cactus One
+  // draw a circle at bottom right corner of the screen
+  //       x    y    w   h
+  ellipse(x1, 175, 50, 50);
 
- //ellipse(x2, 175, 50, 50); // Cactus Two
+  // change the speed
+  s1 = s1 + a1;
 
- //ellipse(x3, 175, 50, 50); // Cactus Three
- 
- //move the dino
- 
- dinoA = dinoA + gravity; 
- dinoS = dinoS + dinoA;
- dinoY = dinoY + dinoS;
- 
- //stop dino hits the ground
- if (dinoY > 170) {  //bottom of the screen (200) minus the radius 
-   dinoA = 0;
-   dinoS = 0;
-   dinoY = 170;
- 
- 
- }
- 
- ellipse(50, dinoY, 60, 60);
- //create the appearance of moving by changing the x position
- s1 = s1 + a1;
- x1 = x1 + s1;
- //x2 = x2 + s2;
- //s2 = s2 + a2;
- //x3 = x3 + s3;
- //s3 = s3 + a3;
+  // create the appearance of moving by changing the x position
+  x1 = x1 + s1;
 
- //put the cactus back to x=900 if it goes past x=(-50)
+  // put the cactus back on the right edge if it goes off the left edge
+  if (x1 < -25) {
+    x1 = 900; // place off screen on right 
+    s1 = -1;  // reset the speed (to avoid insanely fast movement)
+  }
+  
+  //change acceleration based on gravity
+  dinoA = dinoA + gravity;
 
- if (x1 < -26) {
-   x1 = 900;                       //  <--
-   s1 = -3;
- }                                 //
- //if (x2 < -26) {                   //
- //  x2 = 910;                       //  <--
- //  s2 = -3;
- //}                                 //
- //if (x3 < -26) {                   //
- //  x3 = 920;                       //  
- //  s3 = -3;
- //}
+  // Change dino's speed based on acceleration
+  dinoS = dinoS + dinoA;
+
+  // Change dino's location based on speed
+  dinoY = dinoY + dinoS;
+
+  //stop dino from falling
+  if (dinoY > 170) {
+    dinoA = 0;
+    dinoS = 0;
+    dinoY = 170;
+  }
+  
+  if (distance<(30+25)) {
+    textSize(80);
+    text("HIT", 100, 100);
+  }
+
+  // draw the dino
+  fill(0);
+  ellipse(50, dinoY, 60, 60);
+
+  //status updates
+  fill(0);
+  textSize(12);
+  text("dinoY is " + dinoY, 150, 25);
+  text("dinoS is " + dinoS, 150, 50);
+  text("dinoA is " + dinoA, 150, 75);
+  text("distance is " + dinoY, 150, 100);
+
+
+  //determine whether there is a hit
+  //        dino - cactus
+  float a = dinoY - 175; // leg a 
+  float b = x1 - 50; //leg b
+  distance = sqrt(pow(a, 2)+pow(b, 2));
 }
 
+// respond to keypress 
 void keyPressed() {
- dinoY=-1;
- dinoA=-1;
+
+  // Make dino move "up" on the screen
+  // (negative acceleration is required, given direction of Y axis
+  //  in Processing's co-ordinate system)
+  if (dinoY>=170) {
+    dinoA = -1;
+  }
 }
