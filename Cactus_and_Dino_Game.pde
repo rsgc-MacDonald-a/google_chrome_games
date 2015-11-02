@@ -22,7 +22,7 @@ void setup() {
 // this function runs repeatedly
 void draw() {
   // background clears each time the program loops
-  background(255);
+  background(255); 
 
   // update the cactus
   c1.update(gravity);
@@ -30,18 +30,19 @@ void draw() {
   // update the dino
   d1.update(gravity);
 
-  if (distance<(30+25)) {
+  if (d1.isTouching(c1)) {
     textSize(80);
-    text("Game Over", 100, 100);
+    text("Hit", 400, 100);
+    noLoop();
   } 
 
-  ////determine whether there is a hit
-  ////        dino - cactus
-  //float a = dinoY - 175; // leg a 
-  //float b = 50 - c1.getX(); //leg b
-  ////float b;
-  //b = 0;
-  //distance = sqrt(pow(a, 2)+pow(b, 2));
+  //determine whether there is a hit
+  //        dino - cactus
+  float a = d1.getY() - 175; // leg a 
+  float b = 50 - c1.getX(); //leg b
+  //float b;
+  b = 0;
+  distance = sqrt(pow(a, 2)+pow(b, 2));
 }
 
 // respond to keypress 

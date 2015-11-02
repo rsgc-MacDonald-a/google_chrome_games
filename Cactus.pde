@@ -29,7 +29,9 @@ class Cactus {
       s1 = -1;  // reset the speed (to avoid insanely fast movement)
     }
   }
-
+  float getY() {
+    return y1;
+  }
 
   //get X
   //Purpose: return X postition to cactus

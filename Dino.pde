@@ -45,4 +45,21 @@ class Dino {
   void setA(float newA_) {
     dinoA = newA_;
   }
+  // isTouching
+  //
+  // Purpose: uses information about cactus position and determines if it is 
+  //          touching the dino
+  boolean isTouching(Cactus c) {
+    // determine distance between the objects
+    //        dino - cactus
+    float a = (c.getY() - dinoY);
+    float b = (c.getX() - dinoX);
+    float distance = (sqrt(a*a + b*b));
+
+    if ( distance < (dinoR + c.getR())) {
+      return true;
+    }
+    // when dino is not touching, say "no" (not touching) or "false"
+    return false;
+  }
 }
