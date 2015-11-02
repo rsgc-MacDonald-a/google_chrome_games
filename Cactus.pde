@@ -12,7 +12,7 @@ class Cactus {
     s1=s_;
     a1=a_;
   }
-  
+
   //update : draws things related to cactus
   void update(float gravity) {
     ellipse(x1, 175, 50, 50);
@@ -29,5 +29,12 @@ class Cactus {
       s1 = -1;  // reset the speed (to avoid insanely fast movement)
     }
   }
-  
+
+
+  //get X
+  //Purpose: return X postition to cactus
+  float getX() {
+
+    return x1;
+  }
 }
